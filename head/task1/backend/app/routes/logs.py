@@ -5,11 +5,11 @@ Integrates parser, database, WebSocket broadcast, and metrics.
 """
 
 from fastapi import APIRouter, HTTPException
-from oprec_ncc.head.task1.backend.app.models.log_model import LogInput, LogEvent, LogResponse
-from oprec_ncc.head.task1.backend.app.services.parser_service import parse_log
-from oprec_ncc.head.task1.backend.app.services.metrics_service import metrics
-from oprec_ncc.head.task1.backend.app.services.websocket_service import ws_manager
-from oprec_ncc.head.task1.backend.app.database.sqlite import insert_log, get_logs
+from app.models.log_model import LogInput, LogEvent, LogResponse
+from app.services.parser_service import parse_log
+from app.services.metrics_service import metrics
+from app.services.websocket_service import ws_manager
+from app.database.sqlite import insert_log, get_logs
 from typing import Optional
 import logging
 import os

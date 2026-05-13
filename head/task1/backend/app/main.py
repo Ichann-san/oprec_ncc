@@ -11,10 +11,10 @@ from contextlib import asynccontextmanager
 import logging
 import os
 
-from oprec_ncc.head.task1.backend.app.routes import websocket
-from oprec_ncc.head.task1.backend.app.services.metrics_service import metrics
-from oprec_ncc.head.task1.backend.app.database.sqlite import init_db
-from oprec_ncc.head.task1.backend.app.routes import health, logs
+from app.routes import websocket
+from app.services.metrics_service import metrics
+from app.database.sqlite import init_db
+from app.routes import health, logs
 
 # Configure logging
 logging.basicConfig(

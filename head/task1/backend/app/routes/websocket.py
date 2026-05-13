@@ -4,8 +4,8 @@ Handles real-time WebSocket connections for live log streaming.
 """
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from oprec_ncc.head.task1.backend.app.services.websocket_service import ws_manager
-from oprec_ncc.head.task1.backend.app.services.metrics_service import metrics
+from app.services.websocket_service import ws_manager
+from app.services.metrics_service import metrics
 import logging
 
 logger = logging.getLogger("logpulse.ws_route")
