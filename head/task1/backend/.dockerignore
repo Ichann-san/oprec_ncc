@@ -1,0 +1,53 @@
+# =============================================
+# LogPulse Mini SIEM — .dockerignore
+# Exclude unnecessary files from Docker build
+# =============================================
+
+# Virtual environment
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Database files (will be created at runtime)
+*.db
+*.sqlite3
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Environment files (secrets)
+.env
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Tests
+tests/
+pytest.ini
+
+# Documentation
+*.md
+docs/

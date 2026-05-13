@@ -1,0 +1,62 @@
+[
+    {
+        "keyword": "failed",
+        "severity": "ERROR",
+        "description": "Failure detected in log message"
+    },
+    {
+        "keyword": "error",
+        "severity": "ERROR",
+        "description": "Error event detected"
+    },
+    {
+        "keyword": "denied",
+        "severity": "WARNING",
+        "description": "Access denied event detected"
+    },
+    {
+        "keyword": "disconnect",
+        "severity": "WARNING",
+        "description": "Disconnection event detected"
+    },
+    {
+        "keyword": "timeout",
+        "severity": "ERROR",
+        "description": "Timeout event detected"
+    },
+    {
+        "keyword": "unauthorized",
+        "severity": "ERROR",
+        "description": "Unauthorized access attempt"
+    },
+    {
+        "keyword": "forbidden",
+        "severity": "ERROR",
+        "description": "Forbidden access attempt"
+    },
+    {
+        "keyword": "warning",
+        "severity": "WARNING",
+        "description": "Warning event detected"
+    },
+    {
+        "keyword": "critical",
+        "severity": "ERROR",
+        "description": "Critical event detected"
+    },
+    {
+        "keyword": "success",
+        "severity": "INFO",
+        "description": "Successful operation"
+    },
+    {
+        "keyword": "started",
+        "severity": "INFO",
+        "description": "Service or process started"
+    },
+    {
+        "keyword": "connected",
+        "severity": "INFO",
+        "description": "Connection established"
+    }
+]

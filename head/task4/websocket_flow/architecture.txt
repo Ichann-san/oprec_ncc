@@ -1,0 +1,78 @@
+========================================================
+LogPulse Mini SIEM — WebSocket Architecture
+========================================================
+
+Overview
+--------------------------------------------------------
+The WebSocket subsystem enables real-time, bidirectional
+communication between the FastAPI backend and connected
+browser dashboard clients.
+
+Connection Flow
+--------------------------------------------------------
+
+1. Client opens dashboard (index.html)
+2. JavaScript initiates WebSocket connection to ws://SERVER/ws
+3. FastAPI WebSocket endpoint accepts the connection
+4. Connection is registered in WebSocketManager
+5. Metrics counter (websocket_clients) is updated
+
+Message Flow (Log Ingestion → Broadcast)
+--------------------------------------------------------
+
+    POST /logs
+        |
+        v
+    Parse log message (parser_service)
+        |
+        v
+    Match against rules (rule engine)
+        |
+        v
+    Store in SQLite (database/sqlite.py)
+        |
+        v
+    Update metrics (metrics_service)
+        |
+        v
+    Broadcast to all WS clients (websocket_service)
+        |
+        v
+    Client receives JSON event
+        |
+        v
+    Dashboard renders log entry with:
+      - severity badge (color coded)
+      - timestamp
+      - source
+      - message
+      - rule description (if matched)
+
+Disconnect Flow
+--------------------------------------------------------
+
+1. Client closes browser or loses connection
+2. WebSocketDisconnect exception is caught
+3. Connection is removed from WebSocketManager
+4. Metrics counter is decremented
+5. Client auto-reconnects after 5 seconds
+
+Data Format (WebSocket JSON)
+--------------------------------------------------------
+{
+    "id": 42,
+    "timestamp": "2026-05-12T10:00:01.000000",
+    "severity": "ERROR",
+    "source": "app",
+    "message": "Database connection failed",
+    "rule_matched": "Failure detected in log message",
+    "is_alert": true
+}
+
+Supported Severities
+--------------------------------------------------------
+- INFO    → Blue badge
+- WARNING → Yellow badge
+- ERROR   → Red badge
+
+========================================================

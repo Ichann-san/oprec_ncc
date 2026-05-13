@@ -1,0 +1,15 @@
+May 12 10:00:01 server01 systemd[1]: Started LogPulse Backend Service
+May 12 10:00:05 server01 sshd[2341]: Accepted publickey for deploy from 203.0.113.10
+May 12 10:01:12 server01 kernel: [WARNING] Out of memory: Kill process 8421
+May 12 10:02:30 server01 sshd[2455]: Failed password for root from 192.168.1.100
+May 12 10:03:15 server01 nginx[1200]: upstream timeout (110: Connection timed out)
+May 12 10:04:00 server01 systemd[1]: docker.service: Main process exited, code=exited
+May 12 10:04:45 server01 sshd[2510]: Connection closed by authenticating user admin
+May 12 10:05:22 server01 kernel: TCP: disconnect from 10.0.0.55 port 443
+May 12 10:06:00 server01 systemd[1]: Started Docker Container logpulse-backend
+May 12 10:06:30 server01 sshd[2600]: error: maximum authentication attempts exceeded
+May 12 10:07:15 server01 kernel: [INFO] Network interface eth0 connected
+May 12 10:08:00 server01 cron[900]: (root) CMD (/usr/local/bin/backup.sh)
+May 12 10:08:45 server01 sshd[2700]: Received disconnect from 192.168.1.200 port 22
+May 12 10:09:30 server01 nginx[1200]: access denied for path /admin
+May 12 10:10:15 server01 systemd[1]: logpulse.service: Watchdog timeout, restarting

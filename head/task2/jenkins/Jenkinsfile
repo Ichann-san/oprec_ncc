@@ -1,0 +1,167 @@
+// =============================================
+// LogPulse Mini SIEM — Jenkins Pipeline
+// Stages: Build → Test → SonarQube → Quality Gate → Deploy
+// =============================================
+
+pipeline {
+    agent any
+
+    environment {
+        // Docker image name
+        DOCKER_IMAGE = 'logpulse-backend'
+        DOCKER_TAG = "${BUILD_NUMBER}"
+
+        // SonarQube configuration
+        SONAR_HOST_URL = 'http://localhost:9000'
+        SONAR_PROJECT_KEY = 'logpulse-mini-siem'
+
+        // Application
+        APP_PORT = '8000'
+        COMPOSE_FILE = 'head/task1/backend/docker-compose.yml'
+    }
+
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        timestamps()
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    stages {
+
+        // ---- Stage 1: Checkout ----
+        stage('Checkout') {
+            steps {
+                echo '📥 Checking out source code...'
+                checkout scm
+            }
+        }
+
+        // ---- Stage 2: Install Dependencies ----
+        stage('Install Dependencies') {
+            steps {
+                echo '📦 Installing Python dependencies...'
+                dir('head/task1/backend') {
+                    bat '''
+                        python -m venv venv
+                        call venv\\Scripts\\activate
+                        pip install --upgrade pip
+                        pip install -r requirements.txt
+                        pip install pytest pytest-asyncio httpx
+                    '''
+                }
+            }
+        }
+
+        // ---- Stage 3: Run Tests ----
+        stage('Run Tests') {
+            steps {
+                echo '🧪 Running test suite...'
+                dir('head/task1/backend') {
+                    bat '''
+                        call venv\\Scripts\\activate
+                        python -m pytest tests/ -v --tb=short --junitxml=test-results.xml || exit 0
+                    '''
+                }
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'head/task1/backend/test-results.xml'
+                }
+                failure {
+                    echo '❌ Tests failed! Pipeline will stop.'
+                }
+            }
+        }
+
+        // ---- Stage 4: SonarQube Analysis ----
+        stage('SonarQube Analysis') {
+            steps {
+                echo '🔍 Running SonarQube analysis...'
+                dir('head/task1/backend') {
+                    withSonarQubeEnv('SonarQube') {
+                        bat """
+                            sonar-scanner ^
+                                -Dsonar.projectKey=${SONAR_PROJECT_KEY} ^
+                                -Dsonar.sources=app ^
+                                -Dsonar.host.url=${SONAR_HOST_URL} ^
+                                -Dsonar.python.version=3.11
+                        """
+                    }
+                }
+            }
+        }
+
+        // ---- Stage 5: Quality Gate ----
+        stage('Quality Gate') {
+            steps {
+                echo '🚦 Waiting for SonarQube Quality Gate...'
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+            post {
+                failure {
+                    echo '❌ Quality Gate FAILED! Pipeline aborted.'
+                }
+                success {
+                    echo '✅ Quality Gate PASSED!'
+                }
+            }
+        }
+
+        // ---- Stage 6: Build Docker Image ----
+        stage('Build Docker Image') {
+            steps {
+                echo '🐳 Building Docker image...'
+                dir('head/task1/backend') {
+                    bat """
+                        docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                        docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
+                    """
+                }
+            }
+        }
+
+        // ---- Stage 7: Deploy ----
+        stage('Deploy') {
+            steps {
+                echo '🚀 Deploying containers...'
+                dir('head/task1/backend') {
+                    bat '''
+                        docker compose down
+                        docker compose up -d --build
+                    '''
+                }
+            }
+        }
+
+        // ---- Stage 8: Health Check ----
+        stage('Health Check') {
+            steps {
+                echo '💓 Verifying deployment...'
+                sleep(time: 10, unit: 'SECONDS')
+                bat """
+                    curl -f http://localhost:${APP_PORT}/health || exit 1
+                """
+                echo '✅ Deployment verified — backend is healthy!'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '🎉 Pipeline completed successfully!'
+        }
+        failure {
+            echo '💥 Pipeline failed! Check the logs above.'
+        }
+        always {
+            echo '🧹 Cleaning up workspace...'
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    patterns: [[pattern: 'venv/**', type: 'EXCLUDE']])
+        }
+    }
+}

@@ -1,0 +1,47 @@
+========================================================
+LogPulse Mini SIEM — Deploy Stage Documentation
+========================================================
+
+Purpose
+--------------------------------------------------------
+Build a Docker image and deploy the full stack
+using Docker Compose after all checks pass.
+
+Pipeline Step
+--------------------------------------------------------
+Stage Name: Build Docker Image + Deploy
+
+Commands Executed (Build):
+  1. docker build -t logpulse-backend:BUILD_NUMBER .
+  2. docker tag logpulse-backend:BUILD_NUMBER logpulse-backend:latest
+
+Commands Executed (Deploy):
+  3. docker compose down
+  4. docker compose up -d --build
+
+Commands Executed (Health Check):
+  5. sleep 10 seconds
+  6. curl -f http://localhost:8000/health
+
+What Happens:
+  - Previous containers are stopped and removed
+  - A new Docker image is built with the latest code
+  - All services are started via Docker Compose:
+      * logpulse-backend (port 8000)
+      * logpulse-prometheus (port 9090)
+      * logpulse-grafana (port 3000)
+      * logpulse-sonarqube (port 9000)
+      * logpulse-jenkins (port 8080)
+  - Health check verifies the backend is responding
+
+Failure Behavior:
+  - If Docker build fails → pipeline fails
+  - If health check fails → pipeline fails
+  - Containers are NOT rolled back automatically
+    (manual intervention required)
+
+Rollback:
+  - To rollback, use previous Docker image tag:
+    docker run logpulse-backend:PREVIOUS_BUILD_NUMBER
+
+========================================================

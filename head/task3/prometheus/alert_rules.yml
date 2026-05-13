@@ -1,0 +1,63 @@
+# =============================================
+# LogPulse Mini SIEM — Prometheus Alert Rules
+# Triggers alerts for critical system conditions
+# =============================================
+
+groups:
+  - name: logpulse_alerts
+    rules:
+
+      # --- High Error Rate ---
+      # Fires when error log count exceeds 50
+      - alert: HighErrorRate
+        expr: logpulse_error_logs > 50
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate detected"
+          description: "LogPulse has recorded {{ $value }} error logs. Threshold is 50."
+
+      # --- High Alert Count ---
+      # Fires when total alerts exceed 100
+      - alert: HighAlertCount
+        expr: logpulse_alert_count > 100
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High alert count detected"
+          description: "LogPulse has triggered {{ $value }} alerts. Threshold is 100."
+
+      # --- WebSocket Disconnection ---
+      # Fires when no WebSocket clients are connected for 5 minutes
+      - alert: NoWebSocketClients
+        expr: logpulse_websocket_clients == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "No WebSocket clients connected"
+          description: "No dashboard clients have been connected for over 5 minutes."
+
+      # --- Backend Down ---
+      # Fires when Prometheus cannot scrape the backend
+      - alert: BackendDown
+        expr: up{job="logpulse-backend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "LogPulse backend is down"
+          description: "The LogPulse backend has been unreachable for over 1 minute."
+
+      # --- High Request Rate ---
+      # Fires when request count grows rapidly (>1000 in evaluation window)
+      - alert: HighRequestRate
+        expr: logpulse_request_count > 1000
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request rate detected"
+          description: "LogPulse has processed {{ $value }} total requests."

@@ -1,0 +1,49 @@
+========================================================
+LogPulse Mini SIEM — Analyze Stage Documentation
+========================================================
+
+Purpose
+--------------------------------------------------------
+Run SonarQube static code analysis to check for
+code quality issues before deployment.
+
+Pipeline Step
+--------------------------------------------------------
+Stage Name: SonarQube Analysis
+
+Commands Executed:
+  1. sonar-scanner
+       -Dsonar.projectKey=logpulse-mini-siem
+       -Dsonar.sources=app
+       -Dsonar.host.url=http://localhost:9000
+       -Dsonar.python.version=3.11
+
+What Happens:
+  - SonarQube scanner analyzes the app/ directory
+  - Checks for:
+      * Code smells
+      * Code duplication
+      * Maintainability issues
+      * Security vulnerabilities
+      * Bug patterns
+  - Results are sent to SonarQube server
+  - Quality Gate is evaluated
+
+SonarQube Configuration:
+  - Project key: logpulse-mini-siem
+  - Source directory: app/
+  - Language: Python 3.11
+  - Config file: sonar-project.properties
+
+Quality Gate Conditions:
+  - Code coverage >= 0% (no minimum for this project)
+  - Duplicated lines < 10%
+  - Maintainability rating: A
+  - Reliability rating: A
+  - Security rating: A
+
+Failure Behavior:
+  - If Quality Gate fails, pipeline is ABORTED
+  - Developer must fix issues before redeploying
+
+========================================================

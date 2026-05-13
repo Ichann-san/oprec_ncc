@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LogPulse Mini SIEM — Real-time security event monitoring dashboard">
+    <title>LogPulse Mini SIEM — Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">🛡️</span>
+                <h1>LogPulse Mini SIEM</h1>
+            </div>
+        </div>
+        <div class="header-right">
+            <div id="ws-status" class="ws-status disconnected">
+                <span class="ws-dot"></span>
+                <span class="ws-label">Disconnected</span>
+            </div>
+            <button id="btn-clear" class="btn btn-ghost" title="Clear log feed">Clear</button>
+            <button id="btn-scroll-toggle" class="btn btn-ghost active" title="Toggle auto-scroll">Auto-Scroll</button>
+        </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <section id="stats-bar">
+        <div class="stat-card" id="stat-total">
+            <div class="stat-value" id="counter-total">0</div>
+            <div class="stat-label">Total Logs</div>
+        </div>
+        <div class="stat-card stat-error" id="stat-errors">
+            <div class="stat-value" id="counter-errors">0</div>
+            <div class="stat-label">Errors</div>
+        </div>
+        <div class="stat-card stat-warning" id="stat-warnings">
+            <div class="stat-value" id="counter-warnings">0</div>
+            <div class="stat-label">Warnings</div>
+        </div>
+        <div class="stat-card stat-info" id="stat-info">
+            <div class="stat-value" id="counter-info">0</div>
+            <div class="stat-label">Info</div>
+        </div>
+        <div class="stat-card" id="stat-clients">
+            <div class="stat-value" id="counter-clients">0</div>
+            <div class="stat-label">WS Clients</div>
+        </div>
+        <div class="stat-card" id="stat-alerts">
+            <div class="stat-value" id="counter-alerts">0</div>
+            <div class="stat-label">Alerts</div>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <section id="filter-bar">
+        <div class="filter-group">
+            <label for="filter-severity">Severity</label>
+            <select id="filter-severity">
+                <option value="ALL">All</option>
+                <option value="ERROR">Error</option>
+                <option value="WARNING">Warning</option>
+                <option value="INFO">Info</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="filter-search">Search</label>
+            <input type="text" id="filter-search" placeholder="Filter logs...">
+        </div>
+        <div class="filter-group">
+            <label for="ws-url">WebSocket URL</label>
+            <input type="text" id="ws-url" placeholder="ws://localhost:8000/ws" value="ws://localhost:8000/ws">
+        </div>
+        <button id="btn-connect" class="btn btn-primary">Connect</button>
+    </section>
+
+    <!-- Log Feed -->
+    <main id="log-feed-container">
+        <div id="log-feed">
+            <div class="log-entry system-entry">
+                <span class="log-time">--:--:--</span>
+                <span class="severity-badge badge-info">SYSTEM</span>
+                <span class="log-message">Dashboard ready. Connect to a WebSocket endpoint to start receiving logs.</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Alert Toast Container -->
+    <div id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

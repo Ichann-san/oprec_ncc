@@ -1,0 +1,743 @@
+========================================================
+PROJECT MASTERPLAN
+Mini SIEM Real-Time Monitoring System
+========================================================
+
+Project Goal
+--------------------------------------------------------
+Build a single integrated project that fulfills:
+1. Docker Deployment
+2. Jenkins CI/CD + SonarQube
+3. Monitoring using Prometheus + Grafana
+4. Real-time streaming using WebSocket
+
+Deployment Target:
+- Azure VPS (Ubuntu)
+- Publicly accessible
+
+Recommended Tech Stack
+--------------------------------------------------------
+Backend:
+- Python FastAPI
+
+Realtime:
+- Native WebSocket FastAPI
+
+Containerization:
+- Docker
+- Docker Compose
+
+CI/CD:
+- Jenkins
+
+Code Quality:
+- SonarQube
+
+Monitoring:
+- Prometheus
+- Grafana
+
+Reverse Proxy:
+- Nginx
+
+Database:
+- SQLite (simple and lightweight)
+
+========================================================
+FINAL SYSTEM IDEA
+========================================================
+
+Project Name:
+LogPulse Mini SIEM
+
+System Description:
+--------------------------------------------------------
+The system receives logs from users or applications,
+parses important information such as severity level,
+broadcasts events in real-time using WebSocket,
+stores selected events into database,
+exposes metrics for Prometheus,
+and visualizes metrics inside Grafana.
+
+The system also supports:
+- alerting
+- severity levels
+- custom rules
+- Docker deployment
+- CI/CD pipeline
+- quality gate validation
+
+========================================================
+MAIN FEATURES
+========================================================
+
+Core Features
+--------------------------------------------------------
+- Health check endpoint
+- Real-time log streaming
+- WebSocket communication
+- Log parser
+- Metrics endpoint
+- Prometheus scraping
+- Grafana dashboard
+- Jenkins automation
+- SonarQube analysis
+- Docker deployment
+
+Bonus Features
+--------------------------------------------------------
+- Multi-stage Docker build
+- Docker HEALTHCHECK
+- .dockerignore optimization
+- Environment variable support
+- Restart policy
+- SQLite event storage
+- Severity color badge
+- Alerting system
+- Discord webhook notification
+- Rule engine using JSON/YAML
+- Input log path from dashboard
+- Auto deployment pipeline
+- Quality gate validation
+- Public VPS deployment
+
+========================================================
+SYSTEM ARCHITECTURE
+========================================================
+
+General Architecture
+--------------------------------------------------------
+
+Client Browser
+    |
+    v
+Frontend Dashboard
+(HTML + JS)
+    |
+    v
+WebSocket Connection
+    |
+    v
+FastAPI Backend
+    |
+    +---- Log Parser
+    |
+    +---- Rule Engine
+    |
+    +---- SQLite Database
+    |
+    +---- Metrics Exporter
+    |
+    +---- Prometheus
+    |
+    +---- Grafana
+    |
+    +---- Jenkins Pipeline
+    |
+    +---- SonarQube
+    |
+    +---- Docker Container
+    |
+    v
+Azure VPS
+
+========================================================
+FULL REPOSITORY STRUCTURE
+========================================================
+
+head/
+|
+|-- task1/
+|   |
+|   |-- backend/
+|   |   |
+|   |   |-- app/
+|   |   |   |
+|   |   |   |-- main.py
+|   |   |   |-- routes/
+|   |   |   |   |-- health.py
+|   |   |   |   |-- logs.py
+|   |   |   |   |-- websocket.py
+|   |   |   |
+|   |   |   |-- services/
+|   |   |   |   |-- parser_service.py
+|   |   |   |   |-- metrics_service.py
+|   |   |   |   |-- websocket_service.py
+|   |   |   |
+|   |   |   |-- models/
+|   |   |   |   |-- log_model.py
+|   |   |   |
+|   |   |   |-- database/
+|   |   |   |   |-- sqlite.py
+|   |   |   |
+|   |   |   |-- rules/
+|   |   |   |   |-- rules.json
+|   |   |   |
+|   |   |   |-- static/
+|   |   |   |
+|   |   |   |-- templates/
+|   |   |
+|   |   |-- requirements.txt
+|   |   |-- Dockerfile
+|   |   |-- docker-compose.yml
+|   |   |-- .dockerignore
+|   |   |-- .env
+|   |
+|   |-- nginx/
+|   |   |-- nginx.conf
+|   |
+|   |-- README.md
+|
+|-- task2/
+|   |
+|   |-- jenkins/
+|   |   |
+|   |   |-- Jenkinsfile
+|   |   |-- pipeline/
+|   |   |   |-- build_stage.txt
+|   |   |   |-- test_stage.txt
+|   |   |   |-- analyze_stage.txt
+|   |   |   |-- deploy_stage.txt
+|   |
+|   |-- sonarqube/
+|   |   |
+|   |   |-- sonar-project.properties
+|   |
+|   |-- scripts/
+|   |   |
+|   |   |-- build.sh
+|   |   |-- deploy.sh
+|   |   |-- test.sh
+|   |
+|   |-- README.md
+|
+|-- task3/
+|   |
+|   |-- prometheus/
+|   |   |
+|   |   |-- prometheus.yml
+|   |   |-- alert_rules.yml
+|   |
+|   |-- grafana/
+|   |   |
+|   |   |-- dashboards/
+|   |   |   |-- system_dashboard.json
+|   |   |
+|   |   |-- provisioning/
+|   |
+|   |-- alerts/
+|   |   |
+|   |   |-- discord_webhook.txt
+|   |
+|   |-- README.md
+|
+|-- task4/
+|   |
+|   |-- frontend/
+|   |   |
+|   |   |-- index.html
+|   |   |-- style.css
+|   |   |-- app.js
+|   |
+|   |-- sample_logs/
+|   |   |
+|   |   |-- app.log
+|   |   |-- system.log
+|   |
+|   |-- websocket_flow/
+|   |   |
+|   |   |-- architecture.txt
+|   |
+|   |-- README.md
+|
+|-- docs/
+|   |
+|   |-- architecture_diagram.txt
+|   |-- deployment_guide.txt
+|   |-- monitoring_guide.txt
+|   |-- ci_cd_guide.txt
+|
+|-- README.md
+
+========================================================
+PHASE 1 — BACKEND DEVELOPMENT
+========================================================
+
+Objective
+--------------------------------------------------------
+Build the main FastAPI backend service.
+
+Features To Build
+--------------------------------------------------------
+1. Health endpoint
+2. Log ingestion endpoint
+3. WebSocket endpoint
+4. Metrics endpoint
+5. Rule engine
+6. Database storage
+
+Instructions
+--------------------------------------------------------
+
+1. Create FastAPI application
+
+2. Create:
+   GET /health
+
+3. Create:
+   POST /logs
+
+4. POST /logs should:
+   - receive log message
+   - parse severity
+   - store to SQLite
+   - broadcast via websocket
+   - update Prometheus metrics
+
+5. Create:
+   WebSocket /ws
+
+6. WebSocket should:
+   - support multiple clients
+   - broadcast live events
+
+7. Create metrics endpoint:
+   /metrics
+
+8. Expose:
+   - total logs
+   - error logs
+   - websocket clients
+   - request count
+   - alert count
+
+========================================================
+PHASE 2 — RULE ENGINE
+========================================================
+
+Objective
+--------------------------------------------------------
+Detect suspicious events automatically.
+
+Rule Engine Flow
+--------------------------------------------------------
+Incoming Log
+    |
+    v
+Parser
+    |
+    v
+Rule Matcher
+    |
+    +---- Alert Trigger
+    |
+    +---- Severity Assignment
+
+Instructions
+--------------------------------------------------------
+
+1. Create rules.json
+
+2. Each rule should contain:
+   - keyword
+   - severity
+   - description
+
+3. Example logic:
+   - "failed" => ERROR
+   - "denied" => WARNING
+   - "disconnect" => WARNING
+
+4. Rule engine checks logs dynamically
+
+5. If matched:
+   - increase alert metrics
+   - send websocket alert
+   - optionally trigger Discord webhook
+
+========================================================
+PHASE 3 — DATABASE STORAGE
+========================================================
+
+Objective
+--------------------------------------------------------
+Store logs persistently.
+
+Instructions
+--------------------------------------------------------
+
+1. Use SQLite
+
+2. Create log table:
+   - id
+   - timestamp
+   - severity
+   - source
+   - message
+
+3. Save every parsed event
+
+4. Optional:
+   Add event search endpoint
+
+========================================================
+PHASE 4 — FRONTEND DASHBOARD
+========================================================
+
+Objective
+--------------------------------------------------------
+Build realtime monitoring dashboard.
+
+Features
+--------------------------------------------------------
+- live log feed
+- severity badge
+- websocket status
+- alert display
+- auto scroll
+- log counter
+
+Instructions
+--------------------------------------------------------
+
+1. Create simple HTML dashboard
+
+2. Connect frontend to WebSocket
+
+3. When new log received:
+   - append to screen
+   - colorize severity
+
+4. Severity Color:
+   INFO -> blue
+   WARNING -> yellow
+   ERROR -> red
+
+5. Add websocket status indicator:
+   - connected
+   - disconnected
+
+6. Add realtime counters:
+   - total logs
+   - error logs
+   - active clients
+
+========================================================
+PHASE 5 — DOCKERIZATION
+========================================================
+
+Objective
+--------------------------------------------------------
+Containerize entire system.
+
+Instructions
+--------------------------------------------------------
+
+1. Create Dockerfile
+
+2. Use lightweight base image
+
+3. Use multi-stage build
+
+4. Add HEALTHCHECK instruction
+
+5. Add environment variables
+
+6. Add restart policy
+
+7. Add .dockerignore
+
+8. Create docker-compose.yml
+
+Services:
+- backend
+- prometheus
+- grafana
+- sonarqube
+- jenkins
+
+========================================================
+PHASE 6 — PROMETHEUS
+========================================================
+
+Objective
+--------------------------------------------------------
+Collect metrics from backend.
+
+Metrics To Monitor
+--------------------------------------------------------
+- total requests
+- websocket clients
+- log count
+- alert count
+- error count
+
+Instructions
+--------------------------------------------------------
+
+1. Configure Prometheus scrape target
+
+2. Target backend metrics endpoint
+
+3. Add alert rules:
+   - high error rate
+   - websocket disconnect
+   - high alert count
+
+========================================================
+PHASE 7 — GRAFANA
+========================================================
+
+Objective
+--------------------------------------------------------
+Visualize monitoring data.
+
+Dashboard Panels
+--------------------------------------------------------
+1. Total Logs
+2. Error Logs
+3. Warning Logs
+4. Requests Per Minute
+5. WebSocket Active Users
+6. Alerts Triggered
+7. CPU Usage
+8. Memory Usage
+
+Instructions
+--------------------------------------------------------
+
+1. Connect Grafana to Prometheus
+
+2. Build custom dashboard manually
+
+3. Avoid importing premade templates
+
+4. Use PromQL queries
+
+========================================================
+PHASE 8 — ALERTING SYSTEM
+========================================================
+
+Objective
+--------------------------------------------------------
+Create realtime alert notification.
+
+Instructions
+--------------------------------------------------------
+
+1. Configure Prometheus alert rules
+
+2. Create Discord webhook integration
+
+3. Send notification if:
+   - ERROR > threshold
+   - too many alerts
+   - backend down
+
+========================================================
+PHASE 9 — CI/CD WITH JENKINS
+========================================================
+
+Objective
+--------------------------------------------------------
+Automate build and deployment.
+
+Pipeline Stages
+--------------------------------------------------------
+
+GitHub Push
+    |
+    v
+Jenkins Trigger
+    |
+    +---- Install Dependencies
+    |
+    +---- Run Tests
+    |
+    +---- SonarQube Scan
+    |
+    +---- Quality Gate
+    |
+    +---- Build Docker Image
+    |
+    +---- Deploy Container
+
+Instructions
+--------------------------------------------------------
+
+1. Create Jenkins Pipeline
+
+2. Use Jenkinsfile
+
+3. Configure webhook from GitHub
+
+4. Configure SonarQube token
+
+5. Fail pipeline if:
+   - test fails
+   - quality gate fails
+
+6. Deploy automatically after success
+
+========================================================
+PHASE 10 — SONARQUBE
+========================================================
+
+Objective
+--------------------------------------------------------
+Analyze code quality.
+
+Instructions
+--------------------------------------------------------
+
+1. Configure project scanner
+
+2. Analyze:
+   - code smell
+   - duplication
+   - maintainability
+   - security issue
+
+3. Connect Jenkins to SonarQube
+
+4. Enable Quality Gate
+
+========================================================
+PHASE 11 — AZURE VPS DEPLOYMENT
+========================================================
+
+Objective
+--------------------------------------------------------
+Deploy system publicly.
+
+Instructions
+--------------------------------------------------------
+
+1. Create Ubuntu VPS
+
+2. Open ports:
+   - 80
+   - 3000
+   - 8080
+   - 9000
+   - 9090
+
+3. Install:
+   - Docker
+   - Docker Compose
+   - Nginx
+
+4. Configure reverse proxy
+
+5. Run containers
+
+6. Verify public access
+
+========================================================
+FINAL PUBLIC URLS
+========================================================
+
+Backend:
+http://SERVER_IP/health
+
+Dashboard:
+http://SERVER_IP/
+
+Grafana:
+http://SERVER_IP:3000
+
+Prometheus:
+http://SERVER_IP:9090
+
+Jenkins:
+http://SERVER_IP:8080
+
+SonarQube:
+http://SERVER_IP:9000
+
+========================================================
+FINAL EXECUTION FLOW
+========================================================
+
+1. User sends log
+
+2. Backend receives log
+
+3. Parser extracts:
+   - severity
+   - message
+
+4. Rule engine evaluates log
+
+5. Log stored in SQLite
+
+6. Metrics updated
+
+7. WebSocket broadcasts event
+
+8. Frontend receives realtime event
+
+9. Prometheus scrapes metrics
+
+10. Grafana visualizes metrics
+
+11. Alert triggered if threshold exceeded
+
+========================================================
+HOW TO RUN LATER
+========================================================
+
+Backend
+--------------------------------------------------------
+1. Navigate to backend directory
+2. Build Docker image
+3. Start container
+4. Verify /health endpoint
+
+Docker Compose
+--------------------------------------------------------
+1. Navigate to project root
+2. Start compose services
+3. Verify all containers running
+
+Prometheus
+--------------------------------------------------------
+1. Open Prometheus UI
+2. Verify backend target is UP
+
+Grafana
+--------------------------------------------------------
+1. Login Grafana
+2. Add Prometheus datasource
+3. Import custom dashboard
+
+Jenkins
+--------------------------------------------------------
+1. Open Jenkins UI
+2. Configure pipeline
+3. Connect GitHub webhook
+4. Trigger build
+
+SonarQube
+--------------------------------------------------------
+1. Create project
+2. Generate token
+3. Connect Jenkins scanner
+
+========================================================
+IMPORTANT REVIEWER IMPRESSION POINTS
+========================================================
+
+Focus on demonstrating:
+--------------------------------------------------------
+- containerization
+- realtime websocket communication
+- monitoring workflow
+- CI/CD automation
+- clean architecture
+- observability
+- DevOps understanding
+
+========================================================
+END OF MASTERPLAN
+========================================================

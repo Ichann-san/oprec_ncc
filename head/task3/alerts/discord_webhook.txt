@@ -1,0 +1,68 @@
+========================================================
+LogPulse Mini SIEM — Discord Webhook Integration
+========================================================
+
+Overview
+--------------------------------------------------------
+LogPulse sends alert notifications to Discord when
+log events with ERROR severity are detected.
+
+Setup Instructions
+--------------------------------------------------------
+
+1. Open Discord
+2. Go to your server → Channel Settings → Integrations
+3. Click "Create Webhook"
+4. Name it "LogPulse Alerts"
+5. Copy the Webhook URL
+
+6. Set the environment variable:
+   - In .env file:
+     DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN
+
+   - Or in docker-compose.yml under backend environment:
+     DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+
+Alert Notification Format
+--------------------------------------------------------
+When an ERROR-level log is detected, LogPulse sends
+a Discord embed with:
+
+  Title:    🔴 LogPulse Alert — ERROR
+  Message:  [the log message content]
+  Fields:
+    - Source:    [log source identifier]
+    - Rule:     [matched rule description]
+    - Timestamp: [UTC timestamp]
+
+Alert Triggers
+--------------------------------------------------------
+The following conditions trigger Discord notifications:
+
+1. ERROR severity log ingested
+   → Immediate notification via backend webhook
+
+2. Prometheus alert rules (via Alertmanager, optional):
+   - HighErrorRate:      error_logs > 50
+   - HighAlertCount:     alert_count > 100
+   - BackendDown:        backend unreachable for 1 min
+   - NoWebSocketClients: 0 clients for 5 min
+
+Color Coding
+--------------------------------------------------------
+  ERROR   → Red   (0xFF0000)
+  WARNING → Amber (0xFFAA00)
+  INFO    → Blue  (0x0099FF)
+
+Testing
+--------------------------------------------------------
+Send an ERROR log to test the webhook:
+
+  Invoke-RestMethod -Method POST `
+    -Uri http://localhost:8000/logs `
+    -ContentType "application/json" `
+    -Body '{"message": "Critical database failure detected", "source": "db-service"}'
+
+You should see the alert appear in your Discord channel.
+
+========================================================

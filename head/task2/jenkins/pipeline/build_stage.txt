@@ -1,0 +1,36 @@
+========================================================
+LogPulse Mini SIEM — Build Stage Documentation
+========================================================
+
+Purpose
+--------------------------------------------------------
+Install all Python dependencies required by the
+LogPulse FastAPI backend inside a virtual environment.
+
+Pipeline Step
+--------------------------------------------------------
+Stage Name: Install Dependencies
+
+Commands Executed:
+  1. python -m venv venv
+  2. call venv\Scripts\activate
+  3. pip install --upgrade pip
+  4. pip install -r requirements.txt
+  5. pip install pytest pytest-asyncio httpx
+
+What Happens:
+  - A Python virtual environment is created
+  - All production dependencies from requirements.txt
+    are installed (FastAPI, uvicorn, aiosqlite, etc.)
+  - Test dependencies (pytest) are also installed
+    for the next stage
+
+Failure Behavior:
+  - If pip install fails, the pipeline stops
+  - Common causes: missing Python, invalid package versions
+
+Dependencies:
+  - Python 3.11+ installed on Jenkins agent
+  - requirements.txt present in backend directory
+
+========================================================

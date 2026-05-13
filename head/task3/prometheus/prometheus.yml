@@ -1,0 +1,30 @@
+# =============================================
+# LogPulse Mini SIEM — Prometheus Configuration
+# Scrapes metrics from the FastAPI backend
+# =============================================
+
+global:
+  scrape_interval: 15s       # Scrape targets every 15 seconds
+  evaluation_interval: 15s   # Evaluate rules every 15 seconds
+  scrape_timeout: 10s
+
+# Alert rules file
+rule_files:
+  - "alert_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # --- LogPulse Backend Metrics ---
+  - job_name: "logpulse-backend"
+    metrics_path: "/metrics"
+    scrape_interval: 10s
+    static_configs:
+      - targets: ["backend:8000"]
+        labels:
+          service: "logpulse"
+          environment: "production"
+
+  # --- Prometheus Self-Monitoring ---
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

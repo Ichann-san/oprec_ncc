@@ -1,0 +1,15 @@
+2026-05-12 10:00:01 [APP] INFO: Application started successfully
+2026-05-12 10:00:15 [APP] INFO: User login success for user_id=1042
+2026-05-12 10:01:22 [APP] WARNING: High memory usage detected (85%)
+2026-05-12 10:02:10 [APP] ERROR: Database connection failed - timeout after 30s
+2026-05-12 10:02:45 [APP] INFO: Retry successful, database reconnected
+2026-05-12 10:03:30 [APP] ERROR: Authentication failed for user admin@test.com
+2026-05-12 10:04:12 [APP] WARNING: Rate limit exceeded for IP 192.168.1.55
+2026-05-12 10:05:00 [APP] INFO: Scheduled backup completed
+2026-05-12 10:05:33 [APP] ERROR: Unauthorized access attempt to /admin/settings
+2026-05-12 10:06:18 [APP] WARNING: SSL certificate expires in 7 days
+2026-05-12 10:07:01 [APP] INFO: Cache cleared successfully
+2026-05-12 10:07:45 [APP] ERROR: Critical: Payment service timeout
+2026-05-12 10:08:22 [APP] INFO: Health check passed
+2026-05-12 10:09:10 [APP] WARNING: Disk usage at 90%, cleanup recommended
+2026-05-12 10:10:00 [APP] ERROR: Connection denied from blacklisted IP 10.0.0.99

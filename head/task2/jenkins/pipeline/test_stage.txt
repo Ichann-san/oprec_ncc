@@ -1,0 +1,36 @@
+========================================================
+LogPulse Mini SIEM — Test Stage Documentation
+========================================================
+
+Purpose
+--------------------------------------------------------
+Run the automated test suite to verify backend
+functionality before proceeding with analysis and deploy.
+
+Pipeline Step
+--------------------------------------------------------
+Stage Name: Run Tests
+
+Commands Executed:
+  1. call venv\Scripts\activate
+  2. python -m pytest tests/ -v --tb=short --junitxml=test-results.xml
+
+What Happens:
+  - Activates the virtual environment
+  - Runs all tests in the tests/ directory
+  - Generates JUnit XML report for Jenkins
+  - Test results are published in Jenkins UI
+
+Tests Covered:
+  - Health endpoint returns 200 OK
+  - Log ingestion parses severity correctly
+  - Rule engine matches keywords
+  - Database stores and retrieves logs
+  - Metrics counters increment correctly
+
+Failure Behavior:
+  - If any test fails, pipeline is marked as FAILED
+  - Test results XML is always collected (pass or fail)
+  - Failed tests are visible in Jenkins Test Results tab
+
+========================================================
