@@ -232,7 +232,7 @@ STEP 1: Create Azure VM
   4. Click "Review + Create" → "Create"
   5. Download the SSH key (.pem file)
 
-  [INSERT SCREENSHOT: Azure VM creation page]
+![Image](../assets/t1_1.png)
 
 STEP 2: Configure Network Security Group (NSG)
   1. Go to your VM → Networking → Add inbound port rule
@@ -247,7 +247,7 @@ STEP 2: Configure Network Security Group (NSG)
      9090  │ TCP      │ Prometheus
      8000  │ TCP      │ Backend
 
-  [INSERT SCREENSHOT: NSG inbound rules configured]
+![Image](../assets/t1_2.png)
 
 STEP 3: SSH into the VM
   Open PowerShell:
@@ -282,7 +282,7 @@ STEP 4: Install Docker on Ubuntu
   docker --version
   docker compose version
 
-  [INSERT SCREENSHOT: Docker installed on VM]
+![Image](../assets/t1_3.png)
 
 STEP 5: Clone the Repository
   git clone https://github.com/Ichann-san/oprec_ncc.git logpulse
@@ -305,7 +305,7 @@ STEP 7: Install and Configure Nginx
   sudo systemctl restart nginx
   sudo systemctl enable nginx
 
-  [INSERT SCREENSHOT: Nginx configuration test passing]
+![Image](../assets/t1_4.png)
 
 STEP 8: Copy Frontend Files to Nginx
   sudo mkdir -p /usr/share/nginx/html
@@ -319,7 +319,7 @@ STEP 9: Start All Docker Services
 
   docker compose ps
 
-  [INSERT SCREENSHOT: All 5 containers running]
+![Image](../assets/t1_5.png)
 
 STEP 10: Verify Public Access
   From your local machine, test:
@@ -331,7 +331,10 @@ STEP 10: Verify Public Access
   http://104.214.185.102:8080          → Jenkins
   http://104.214.185.102:9000          → SonarQube
 
-  [INSERT SCREENSHOT: Each service accessible publicly]
+![Image](../assets/t1_6.png)
+![Image](../assets/t1_7.png)
+![Image](../assets/t1_8.png)
+![Image](../assets/t1_9.png)
 
 ========================================================
 9. NGINX REVERSE PROXY
@@ -394,17 +397,15 @@ After deployment, verify each component:
 11. SCREENSHOTS
 ========================================================
 
-Insert your screenshots below after completing each step:
-
-[INSERT SCREENSHOT: Azure VM created and running]
-[INSERT SCREENSHOT: NSG ports configured]
-[INSERT SCREENSHOT: Docker installed on VM]
-[INSERT SCREENSHOT: Nginx config test passing]
-[INSERT SCREENSHOT: docker compose ps — all containers UP]
-[INSERT SCREENSHOT: Frontend dashboard accessible at 104.214.185.102]
-[INSERT SCREENSHOT: Backend /health returning OK]
-[INSERT SCREENSHOT: Prometheus targets showing UP]
-[INSERT SCREENSHOT: Grafana dashboard with live data]
+![Image](../assets/t1_1.png)
+![Image](../assets/t1_2.png)
+![Image](../assets/t1_3.png)
+![Image](../assets/t1_4.png)
+![Image](../assets/t1_5.png)
+![Image](../assets/t1_6.png)
+![Image](../assets/t1_7.png)
+![Image](../assets/t1_8.png)
+![Image](../assets/t1_9.png)
 
 ========================================================
 END OF TASK 1 DOCUMENTATION

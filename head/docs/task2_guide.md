@@ -165,6 +165,7 @@ STEP 1: Access Jenkins for First Time
 
      docker exec logpulse-jenkins \
        cat /var/jenkins_home/secrets/initialAdminPassword
+    Pw : 90465116263843ea988b5bbe30717dc6
 
   4. Paste the password and click Continue
   5. Click "Install suggested plugins"
@@ -172,18 +173,12 @@ STEP 1: Access Jenkins for First Time
   7. Create your admin user account
   8. Click "Save and Finish" → "Start using Jenkins"
 
-  [INSERT SCREENSHOT: Jenkins unlock page]
-  [INSERT SCREENSHOT: Plugin installation progress]
-  [INSERT SCREENSHOT: Jenkins dashboard after setup]
-
 STEP 2: Install Additional Plugins
   1. Go to Manage Jenkins → Plugins → Available plugins
   2. Search and install:
      - SonarQube Scanner
      - Docker Pipeline
   3. Restart Jenkins after installation
-
-  [INSERT SCREENSHOT: Plugins installed]
 
 STEP 3: Configure SonarQube Server in Jenkins
   1. Go to Manage Jenkins → System
@@ -222,7 +217,6 @@ STEP 5: Create Pipeline Job
   5. Click Save
 
   [INSERT SCREENSHOT: Pipeline job configuration]
-  [INSERT SCREENSHOT: SCM configuration with Jenkinsfile path]
 
 STEP 6: Trigger First Build
   1. On the pipeline page, click "Build Now"
